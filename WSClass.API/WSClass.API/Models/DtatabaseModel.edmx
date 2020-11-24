@@ -1,0 +1,689 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TaskDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Authentication">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="User-Agent" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="IP" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="Token" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="Login" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompletTask">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="User" Type="int" Nullable="false" />
+          <Property Name="CompletationDate" Type="datetime" Nullable="false" />
+          <Property Name="Task" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="File">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Path" Type="varchar(max)" Nullable="false" />
+          <Property Name="FileType" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="IP">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IP" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="Confiance" Type="int" Nullable="false" />
+          <Property Name="AlreadyBeenBanned" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="isValidEmail" Type="bit" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Notifications">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Content" Type="varchar(max)" Nullable="false" />
+          <Property Name="Icon" Type="int" />
+          <Property Name="User" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SendTask">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="File" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" Nullable="false" />
+          <Property Name="User" Type="int" Nullable="false" />
+          <Property Name="Task" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Points" Type="int" Nullable="false" />
+          <Property Name="TaskIcon" Type="int" Nullable="false" />
+          <Property Name="Content" Type="varchar(max)" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" Nullable="false" />
+          <Property Name="Creator" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LoginID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="AccountType" Type="int" Nullable="false" />
+          <Property Name="ProfileImage" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Authentic__Login__5AB9788F">
+          <End Role="Login" Type="Self.Login" Multiplicity="1" />
+          <End Role="Authentication" Type="Self.Authentication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Login">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Authentication">
+              <PropertyRef Name="Login" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <!--Errors Found During Generation:
+warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+        <Association Name="FK__Authenticati__IP__5BAD9CC8" />-->
+        <Association Name="FK__CompletTas__Task__3D2915A8">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="CompletTask" Type="Self.CompletTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CompletTask">
+              <PropertyRef Name="Task" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CompletTas__User__3E1D39E1">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="CompletTask" Type="Self.CompletTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CompletTask">
+              <PropertyRef Name="User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Notificati__Icon__40F9A68C">
+          <End Role="File" Type="Self.File" Multiplicity="0..1" />
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="File">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="Icon" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Notificati__User__41EDCAC5">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SendTask__File__46B27FE2">
+          <End Role="File" Type="Self.File" Multiplicity="1" />
+          <End Role="SendTask" Type="Self.SendTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="File">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SendTask">
+              <PropertyRef Name="File" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SendTask__Task__45BE5BA9">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="SendTask" Type="Self.SendTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SendTask">
+              <PropertyRef Name="Task" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SendTask__User__44CA3770">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="SendTask" Type="Self.SendTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SendTask">
+              <PropertyRef Name="User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Task__Creator__3A4CA8FD">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Task" Type="Self.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="Creator" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__User__ProfileIma__367C1819">
+          <End Role="File" Type="Self.File" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="File">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="ProfileImage" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TaskDatabaseModelStoreContainer">
+          <EntitySet Name="Authentication" EntityType="Self.Authentication" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompletTask" EntityType="Self.CompletTask" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="File" EntityType="Self.File" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IP" EntityType="Self.IP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SendTask" EntityType="Self.SendTask" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Task" EntityType="Self.Task" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Authentic__Login__5AB9788F" Association="Self.FK__Authentic__Login__5AB9788F">
+            <End Role="Login" EntitySet="Login" />
+            <End Role="Authentication" EntitySet="Authentication" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CompletTas__Task__3D2915A8" Association="Self.FK__CompletTas__Task__3D2915A8">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="CompletTask" EntitySet="CompletTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CompletTas__User__3E1D39E1" Association="Self.FK__CompletTas__User__3E1D39E1">
+            <End Role="User" EntitySet="User" />
+            <End Role="CompletTask" EntitySet="CompletTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Notificati__Icon__40F9A68C" Association="Self.FK__Notificati__Icon__40F9A68C">
+            <End Role="File" EntitySet="File" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Notificati__User__41EDCAC5" Association="Self.FK__Notificati__User__41EDCAC5">
+            <End Role="User" EntitySet="User" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SendTask__File__46B27FE2" Association="Self.FK__SendTask__File__46B27FE2">
+            <End Role="File" EntitySet="File" />
+            <End Role="SendTask" EntitySet="SendTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SendTask__Task__45BE5BA9" Association="Self.FK__SendTask__Task__45BE5BA9">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="SendTask" EntitySet="SendTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SendTask__User__44CA3770" Association="Self.FK__SendTask__User__44CA3770">
+            <End Role="User" EntitySet="User" />
+            <End Role="SendTask" EntitySet="SendTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Task__Creator__3A4CA8FD" Association="Self.FK__Task__Creator__3A4CA8FD">
+            <End Role="User" EntitySet="User" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK__User__ProfileIma__367C1819" Association="Self.FK__User__ProfileIma__367C1819">
+            <End Role="File" EntitySet="File" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TaskDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Authentication">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="User_Agent" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IP" Type="String" MaxLength="36" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Token" Type="String" MaxLength="36" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Login" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Login1" Relationship="Self.FK__Authentic__Login__5AB9788F" FromRole="Authentication" ToRole="Login" />
+        </EntityType>
+        <EntityType Name="CompletTask">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="User" Type="Int32" Nullable="false" />
+          <Property Name="CompletationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Task" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Task1" Relationship="Self.FK__CompletTas__Task__3D2915A8" FromRole="CompletTask" ToRole="Task" />
+          <NavigationProperty Name="User1" Relationship="Self.FK__CompletTas__User__3E1D39E1" FromRole="CompletTask" ToRole="User" />
+        </EntityType>
+        <EntityType Name="File">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Path" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FileType" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Notifications" Relationship="Self.FK__Notificati__Icon__40F9A68C" FromRole="File" ToRole="Notifications" />
+          <NavigationProperty Name="SendTask" Relationship="Self.FK__SendTask__File__46B27FE2" FromRole="File" ToRole="SendTask" />
+          <NavigationProperty Name="User" Relationship="Self.FK__User__ProfileIma__367C1819" FromRole="File" ToRole="User" />
+        </EntityType>
+        <EntityType Name="IP">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IP1" Type="String" MaxLength="36" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Confiance" Type="Int32" Nullable="false" />
+          <Property Name="AlreadyBeenBanned" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="isValidEmail" Type="Boolean" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Authentication" Relationship="Self.FK__Authentic__Login__5AB9788F" FromRole="Login" ToRole="Authentication" />
+        </EntityType>
+        <EntityType Name="Notifications">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Icon" Type="Int32" />
+          <Property Name="User" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="File" Relationship="Self.FK__Notificati__Icon__40F9A68C" FromRole="Notifications" ToRole="File" />
+          <NavigationProperty Name="User1" Relationship="Self.FK__Notificati__User__41EDCAC5" FromRole="Notifications" ToRole="User" />
+        </EntityType>
+        <EntityType Name="SendTask">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="File" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="User" Type="Int32" Nullable="false" />
+          <Property Name="Task" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="File1" Relationship="Self.FK__SendTask__File__46B27FE2" FromRole="SendTask" ToRole="File" />
+          <NavigationProperty Name="Task1" Relationship="Self.FK__SendTask__Task__45BE5BA9" FromRole="SendTask" ToRole="Task" />
+          <NavigationProperty Name="User1" Relationship="Self.FK__SendTask__User__44CA3770" FromRole="SendTask" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Points" Type="Int32" Nullable="false" />
+          <Property Name="TaskIcon" Type="Int32" Nullable="false" />
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Creator" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CompletTask" Relationship="Self.FK__CompletTas__Task__3D2915A8" FromRole="Task" ToRole="CompletTask" />
+          <NavigationProperty Name="SendTask" Relationship="Self.FK__SendTask__Task__45BE5BA9" FromRole="Task" ToRole="SendTask" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Task__Creator__3A4CA8FD" FromRole="Task" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LoginID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AccountType" Type="Int32" Nullable="false" />
+          <Property Name="ProfileImage" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CompletTask" Relationship="Self.FK__CompletTas__User__3E1D39E1" FromRole="User" ToRole="CompletTask" />
+          <NavigationProperty Name="File" Relationship="Self.FK__User__ProfileIma__367C1819" FromRole="User" ToRole="File" />
+          <NavigationProperty Name="Notifications" Relationship="Self.FK__Notificati__User__41EDCAC5" FromRole="User" ToRole="Notifications" />
+          <NavigationProperty Name="SendTask" Relationship="Self.FK__SendTask__User__44CA3770" FromRole="User" ToRole="SendTask" />
+          <NavigationProperty Name="Task" Relationship="Self.FK__Task__Creator__3A4CA8FD" FromRole="User" ToRole="Task" />
+        </EntityType>
+        <Association Name="FK__Authentic__Login__5AB9788F">
+          <End Role="Login" Type="Self.Login" Multiplicity="1" />
+          <End Role="Authentication" Type="Self.Authentication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Login">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Authentication">
+              <PropertyRef Name="Login" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CompletTas__Task__3D2915A8">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="CompletTask" Type="Self.CompletTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CompletTask">
+              <PropertyRef Name="Task" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CompletTas__User__3E1D39E1">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="CompletTask" Type="Self.CompletTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CompletTask">
+              <PropertyRef Name="User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Notificati__Icon__40F9A68C">
+          <End Role="File" Type="Self.File" Multiplicity="0..1" />
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="File">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="Icon" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SendTask__File__46B27FE2">
+          <End Role="File" Type="Self.File" Multiplicity="1" />
+          <End Role="SendTask" Type="Self.SendTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="File">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SendTask">
+              <PropertyRef Name="File" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__User__ProfileIma__367C1819">
+          <End Role="File" Type="Self.File" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="File">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="ProfileImage" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Notificati__User__41EDCAC5">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SendTask__Task__45BE5BA9">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="SendTask" Type="Self.SendTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SendTask">
+              <PropertyRef Name="Task" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SendTask__User__44CA3770">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="SendTask" Type="Self.SendTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SendTask">
+              <PropertyRef Name="User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Task__Creator__3A4CA8FD">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Task" Type="Self.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="Creator" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TaskDatabaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Authentication" EntityType="Self.Authentication" />
+          <EntitySet Name="CompletTask" EntityType="Self.CompletTask" />
+          <EntitySet Name="File" EntityType="Self.File" />
+          <EntitySet Name="IP" EntityType="Self.IP" />
+          <EntitySet Name="Login" EntityType="Self.Login" />
+          <EntitySet Name="Notifications" EntityType="Self.Notifications" />
+          <EntitySet Name="SendTask" EntityType="Self.SendTask" />
+          <EntitySet Name="Task" EntityType="Self.Task" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <AssociationSet Name="FK__Authentic__Login__5AB9788F" Association="Self.FK__Authentic__Login__5AB9788F">
+            <End Role="Login" EntitySet="Login" />
+            <End Role="Authentication" EntitySet="Authentication" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CompletTas__Task__3D2915A8" Association="Self.FK__CompletTas__Task__3D2915A8">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="CompletTask" EntitySet="CompletTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CompletTas__User__3E1D39E1" Association="Self.FK__CompletTas__User__3E1D39E1">
+            <End Role="User" EntitySet="User" />
+            <End Role="CompletTask" EntitySet="CompletTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Notificati__Icon__40F9A68C" Association="Self.FK__Notificati__Icon__40F9A68C">
+            <End Role="File" EntitySet="File" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SendTask__File__46B27FE2" Association="Self.FK__SendTask__File__46B27FE2">
+            <End Role="File" EntitySet="File" />
+            <End Role="SendTask" EntitySet="SendTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK__User__ProfileIma__367C1819" Association="Self.FK__User__ProfileIma__367C1819">
+            <End Role="File" EntitySet="File" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Notificati__User__41EDCAC5" Association="Self.FK__Notificati__User__41EDCAC5">
+            <End Role="User" EntitySet="User" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SendTask__Task__45BE5BA9" Association="Self.FK__SendTask__Task__45BE5BA9">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="SendTask" EntitySet="SendTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SendTask__User__44CA3770" Association="Self.FK__SendTask__User__44CA3770">
+            <End Role="User" EntitySet="User" />
+            <End Role="SendTask" EntitySet="SendTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Task__Creator__3A4CA8FD" Association="Self.FK__Task__Creator__3A4CA8FD">
+            <End Role="User" EntitySet="User" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TaskDatabaseModelStoreContainer" CdmEntityContainer="TaskDatabaseEntities">
+          <EntitySetMapping Name="Authentication">
+            <EntityTypeMapping TypeName="TaskDatabaseModel.Authentication">
+              <MappingFragment StoreEntitySet="Authentication">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="User_Agent" ColumnName="User-Agent" />
+                <ScalarProperty Name="IP" ColumnName="IP" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompletTask">
+            <EntityTypeMapping TypeName="TaskDatabaseModel.CompletTask">
+              <MappingFragment StoreEntitySet="CompletTask">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="User" ColumnName="User" />
+                <ScalarProperty Name="CompletationDate" ColumnName="CompletationDate" />
+                <ScalarProperty Name="Task" ColumnName="Task" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="File">
+            <EntityTypeMapping TypeName="TaskDatabaseModel.File">
+              <MappingFragment StoreEntitySet="File">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Path" ColumnName="Path" />
+                <ScalarProperty Name="FileType" ColumnName="FileType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IP">
+            <EntityTypeMapping TypeName="TaskDatabaseModel.IP">
+              <MappingFragment StoreEntitySet="IP">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="IP1" ColumnName="IP" />
+                <ScalarProperty Name="Confiance" ColumnName="Confiance" />
+                <ScalarProperty Name="AlreadyBeenBanned" ColumnName="AlreadyBeenBanned" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Login">
+            <EntityTypeMapping TypeName="TaskDatabaseModel.Login">
+              <MappingFragment StoreEntitySet="Login">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="isValidEmail" ColumnName="isValidEmail" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notifications">
+            <EntityTypeMapping TypeName="TaskDatabaseModel.Notifications">
+              <MappingFragment StoreEntitySet="Notifications">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="User" ColumnName="User" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SendTask">
+            <EntityTypeMapping TypeName="TaskDatabaseModel.SendTask">
+              <MappingFragment StoreEntitySet="SendTask">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="File" ColumnName="File" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="User" ColumnName="User" />
+                <ScalarProperty Name="Task" ColumnName="Task" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Task">
+            <EntityTypeMapping TypeName="TaskDatabaseModel.Task">
+              <MappingFragment StoreEntitySet="Task">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Points" ColumnName="Points" />
+                <ScalarProperty Name="TaskIcon" ColumnName="TaskIcon" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="Creator" ColumnName="Creator" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="TaskDatabaseModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="LoginID" ColumnName="LoginID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AccountType" ColumnName="AccountType" />
+                <ScalarProperty Name="ProfileImage" ColumnName="ProfileImage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
