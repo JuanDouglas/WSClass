@@ -12,7 +12,7 @@ namespace WSClass.API.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Notifications
+    public partial class Notification
     {
         public int ID { get; set; }
         public string Title { get; set; }
@@ -20,7 +20,7 @@ namespace WSClass.API.Models
         public Nullable<int> Icon { get; set; }
         public int User { get; set; }
     
-        public virtual File File { get; set; }
+        public virtual Image Image { get; set; }
         public virtual User User1 { get; set; }
     }
 }

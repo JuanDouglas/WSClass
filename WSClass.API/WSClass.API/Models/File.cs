@@ -17,7 +17,7 @@ namespace WSClass.API.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public File()
         {
-            this.Notifications = new HashSet<Notifications>();
+            this.Image = new HashSet<Image>();
             this.SendTask = new HashSet<SendTask>();
             this.User = new HashSet<User>();
         }
@@ -25,9 +25,10 @@ namespace WSClass.API.Models
         public int ID { get; set; }
         public string Path { get; set; }
         public int FileType { get; set; }
+        public int Leaght { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Notifications> Notifications { get; set; }
+        public virtual ICollection<Image> Image { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SendTask> SendTask { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

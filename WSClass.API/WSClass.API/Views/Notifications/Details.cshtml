@@ -1,50 +1,58 @@
-﻿@model WSClass.API.Models.Notifications
+﻿@model WSClass.API.Models.Notification
 
 @{
-    ViewBag.Title = "Details";
+    Layout = null;
 }
 
-<h2>Details</h2>
+<!DOCTYPE html>
 
-<div>
-    <h4>Notifications</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.File.Path)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.File.Path)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.User1.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.User1.Name)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>Notification</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Content)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Content)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Image.ID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Image.ID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.User1.FirstName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.User1.FirstName)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

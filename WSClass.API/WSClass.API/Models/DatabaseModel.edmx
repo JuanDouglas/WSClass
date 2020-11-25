@@ -16,6 +16,33 @@
           <Property Name="Login" Type="int" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="Class">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="Class_has_Students">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Student" Type="int" Nullable="false" />
+          <Property Name="Class" Type="int" Nullable="false" />
+          <Property Name="AddDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Class_has_Teacher">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Teacher" Type="int" Nullable="false" />
+          <Property Name="Class" Type="int" Nullable="false" />
+          <Property Name="AddDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="CompletTask">
           <Key>
             <PropertyRef Name="ID" />
@@ -24,6 +51,7 @@
           <Property Name="User" Type="int" Nullable="false" />
           <Property Name="CompletationDate" Type="datetime" Nullable="false" />
           <Property Name="Task" Type="int" Nullable="false" />
+          <Property Name="SendTask" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="File">
           <Key>
@@ -32,6 +60,17 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Path" Type="varchar(max)" Nullable="false" />
           <Property Name="FileType" Type="int" Nullable="false" />
+          <Property Name="Leaght" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Width" Type="int" />
+          <Property Name="Height" Type="int" />
+          <Property Name="Extension" Type="int" Nullable="false" />
+          <Property Name="File" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="IP">
           <Key>
@@ -53,7 +92,7 @@
           <Property Name="isValidEmail" Type="bit" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" Nullable="false" />
         </EntityType>
-        <EntityType Name="Notifications">
+        <EntityType Name="Notification">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
@@ -85,6 +124,7 @@
           <Property Name="Content" Type="varchar(max)" Nullable="false" />
           <Property Name="StartDate" Type="datetime" Nullable="false" />
           <Property Name="Creator" Type="int" Nullable="false" />
+          <Property Name="Class" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -92,10 +132,14 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LoginID" Type="int" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="SecondName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="BirthDay" Type="datetime" Nullable="false" />
           <Property Name="AccountType" Type="int" Nullable="false" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="30" />
+          <Property Name="AcceptedTerms" Type="bit" Nullable="false" />
           <Property Name="ProfileImage" Type="int" Nullable="false" />
-          <Property Name="ValidKey" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="ValidKey" Type="varchar" MaxLength="74" Nullable="false" />
         </EntityType>
         <Association Name="FK__Authentic__Login__5AB9788F">
           <End Role="Login" Type="Self.Login" Multiplicity="1" />
@@ -112,7 +156,67 @@
         <!--Errors Found During Generation:
 warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
         <Association Name="FK__Authenticati__IP__5BAD9CC8" />-->
-        <Association Name="FK__CompletTas__Task__3D2915A8">
+        <Association Name="FK__Class_has__Class__11158940">
+          <End Role="Class" Type="Self.Class" Multiplicity="1" />
+          <End Role="Class_has_Students" Type="Self.Class_has_Students" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Class_has_Students">
+              <PropertyRef Name="Class" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Class_has__Class__14E61A24">
+          <End Role="Class" Type="Self.Class" Multiplicity="1" />
+          <End Role="Class_has_Teacher" Type="Self.Class_has_Teacher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Class_has_Teacher">
+              <PropertyRef Name="Class" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Class_has__Stude__10216507">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Class_has_Students" Type="Self.Class_has_Students" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Class_has_Students">
+              <PropertyRef Name="Student" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Class_has__Teach__13F1F5EB">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Class_has_Teacher" Type="Self.Class_has_Teacher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Class_has_Teacher">
+              <PropertyRef Name="Teacher" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CompletTa__SendT__2704CA5F">
+          <End Role="SendTask" Type="Self.SendTask" Multiplicity="1" />
+          <End Role="CompletTask" Type="Self.CompletTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SendTask">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CompletTask">
+              <PropertyRef Name="SendTask" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CompletTas__Task__251C81ED">
           <End Role="Task" Type="Self.Task" Multiplicity="1" />
           <End Role="CompletTask" Type="Self.CompletTask" Multiplicity="*" />
           <ReferentialConstraint>
@@ -124,7 +228,7 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CompletTas__User__3E1D39E1">
+        <Association Name="FK__CompletTas__User__2610A626">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="CompletTask" Type="Self.CompletTask" Multiplicity="*" />
           <ReferentialConstraint>
@@ -136,31 +240,43 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Notificati__Icon__40F9A68C">
-          <End Role="File" Type="Self.File" Multiplicity="0..1" />
-          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+        <Association Name="FK__Image__File__793DFFAF">
+          <End Role="File" Type="Self.File" Multiplicity="1" />
+          <End Role="Image" Type="Self.Image" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="File">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Notifications">
+            <Dependent Role="Image">
+              <PropertyRef Name="File" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Notificati__Icon__2EA5EC27">
+          <End Role="Image" Type="Self.Image" Multiplicity="0..1" />
+          <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Image">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Notification">
               <PropertyRef Name="Icon" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Notificati__User__41EDCAC5">
+        <Association Name="FK__Notificati__User__2F9A1060">
           <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Notifications">
+            <Dependent Role="Notification">
               <PropertyRef Name="User" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SendTask__File__46B27FE2">
+        <Association Name="FK__SendTask__File__22401542">
           <End Role="File" Type="Self.File" Multiplicity="1" />
           <End Role="SendTask" Type="Self.SendTask" Multiplicity="*" />
           <ReferentialConstraint>
@@ -172,7 +288,7 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SendTask__Task__45BE5BA9">
+        <Association Name="FK__SendTask__Task__214BF109">
           <End Role="Task" Type="Self.Task" Multiplicity="1" />
           <End Role="SendTask" Type="Self.SendTask" Multiplicity="*" />
           <ReferentialConstraint>
@@ -184,7 +300,7 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SendTask__User__44CA3770">
+        <Association Name="FK__SendTask__User__2057CCD0">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="SendTask" Type="Self.SendTask" Multiplicity="*" />
           <ReferentialConstraint>
@@ -196,7 +312,19 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Task__Creator__3A4CA8FD">
+        <Association Name="FK__Task__Class__18B6AB08">
+          <End Role="Class" Type="Self.Class" Multiplicity="1" />
+          <End Role="Task" Type="Self.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="Class" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Task__Creator__17C286CF">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="Task" Type="Self.Task" Multiplicity="*" />
           <ReferentialConstraint>
@@ -208,7 +336,7 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__User__LoginID__6166761E">
+        <Association Name="FK__User__LoginID__0B5CAFEA">
           <End Role="Login" Type="Self.Login" Multiplicity="1" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
@@ -220,7 +348,7 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__User__ProfileIma__367C1819">
+        <Association Name="FK__User__ProfileIma__0A688BB1">
           <End Role="File" Type="Self.File" Multiplicity="1" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
@@ -234,11 +362,15 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
         </Association>
         <EntityContainer Name="TaskDatabaseModelStoreContainer">
           <EntitySet Name="Authentication" EntityType="Self.Authentication" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Class" EntityType="Self.Class" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Class_has_Students" EntityType="Self.Class_has_Students" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Class_has_Teacher" EntityType="Self.Class_has_Teacher" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CompletTask" EntityType="Self.CompletTask" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="File" EntityType="Self.File" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Image" EntityType="Self.Image" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IP" EntityType="Self.IP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Notification" EntityType="Self.Notification" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SendTask" EntityType="Self.SendTask" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Task" EntityType="Self.Task" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
@@ -246,43 +378,71 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
             <End Role="Login" EntitySet="Login" />
             <End Role="Authentication" EntitySet="Authentication" />
           </AssociationSet>
-          <AssociationSet Name="FK__CompletTas__Task__3D2915A8" Association="Self.FK__CompletTas__Task__3D2915A8">
+          <AssociationSet Name="FK__Class_has__Class__11158940" Association="Self.FK__Class_has__Class__11158940">
+            <End Role="Class" EntitySet="Class" />
+            <End Role="Class_has_Students" EntitySet="Class_has_Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Class_has__Class__14E61A24" Association="Self.FK__Class_has__Class__14E61A24">
+            <End Role="Class" EntitySet="Class" />
+            <End Role="Class_has_Teacher" EntitySet="Class_has_Teacher" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Class_has__Stude__10216507" Association="Self.FK__Class_has__Stude__10216507">
+            <End Role="User" EntitySet="User" />
+            <End Role="Class_has_Students" EntitySet="Class_has_Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Class_has__Teach__13F1F5EB" Association="Self.FK__Class_has__Teach__13F1F5EB">
+            <End Role="User" EntitySet="User" />
+            <End Role="Class_has_Teacher" EntitySet="Class_has_Teacher" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CompletTa__SendT__2704CA5F" Association="Self.FK__CompletTa__SendT__2704CA5F">
+            <End Role="SendTask" EntitySet="SendTask" />
+            <End Role="CompletTask" EntitySet="CompletTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CompletTas__Task__251C81ED" Association="Self.FK__CompletTas__Task__251C81ED">
             <End Role="Task" EntitySet="Task" />
             <End Role="CompletTask" EntitySet="CompletTask" />
           </AssociationSet>
-          <AssociationSet Name="FK__CompletTas__User__3E1D39E1" Association="Self.FK__CompletTas__User__3E1D39E1">
+          <AssociationSet Name="FK__CompletTas__User__2610A626" Association="Self.FK__CompletTas__User__2610A626">
             <End Role="User" EntitySet="User" />
             <End Role="CompletTask" EntitySet="CompletTask" />
           </AssociationSet>
-          <AssociationSet Name="FK__Notificati__Icon__40F9A68C" Association="Self.FK__Notificati__Icon__40F9A68C">
+          <AssociationSet Name="FK__Image__File__793DFFAF" Association="Self.FK__Image__File__793DFFAF">
             <End Role="File" EntitySet="File" />
-            <End Role="Notifications" EntitySet="Notifications" />
+            <End Role="Image" EntitySet="Image" />
           </AssociationSet>
-          <AssociationSet Name="FK__Notificati__User__41EDCAC5" Association="Self.FK__Notificati__User__41EDCAC5">
+          <AssociationSet Name="FK__Notificati__Icon__2EA5EC27" Association="Self.FK__Notificati__Icon__2EA5EC27">
+            <End Role="Image" EntitySet="Image" />
+            <End Role="Notification" EntitySet="Notification" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Notificati__User__2F9A1060" Association="Self.FK__Notificati__User__2F9A1060">
             <End Role="User" EntitySet="User" />
-            <End Role="Notifications" EntitySet="Notifications" />
+            <End Role="Notification" EntitySet="Notification" />
           </AssociationSet>
-          <AssociationSet Name="FK__SendTask__File__46B27FE2" Association="Self.FK__SendTask__File__46B27FE2">
+          <AssociationSet Name="FK__SendTask__File__22401542" Association="Self.FK__SendTask__File__22401542">
             <End Role="File" EntitySet="File" />
             <End Role="SendTask" EntitySet="SendTask" />
           </AssociationSet>
-          <AssociationSet Name="FK__SendTask__Task__45BE5BA9" Association="Self.FK__SendTask__Task__45BE5BA9">
+          <AssociationSet Name="FK__SendTask__Task__214BF109" Association="Self.FK__SendTask__Task__214BF109">
             <End Role="Task" EntitySet="Task" />
             <End Role="SendTask" EntitySet="SendTask" />
           </AssociationSet>
-          <AssociationSet Name="FK__SendTask__User__44CA3770" Association="Self.FK__SendTask__User__44CA3770">
+          <AssociationSet Name="FK__SendTask__User__2057CCD0" Association="Self.FK__SendTask__User__2057CCD0">
             <End Role="User" EntitySet="User" />
             <End Role="SendTask" EntitySet="SendTask" />
           </AssociationSet>
-          <AssociationSet Name="FK__Task__Creator__3A4CA8FD" Association="Self.FK__Task__Creator__3A4CA8FD">
+          <AssociationSet Name="FK__Task__Class__18B6AB08" Association="Self.FK__Task__Class__18B6AB08">
+            <End Role="Class" EntitySet="Class" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Task__Creator__17C286CF" Association="Self.FK__Task__Creator__17C286CF">
             <End Role="User" EntitySet="User" />
             <End Role="Task" EntitySet="Task" />
           </AssociationSet>
-          <AssociationSet Name="FK__User__LoginID__6166761E" Association="Self.FK__User__LoginID__6166761E">
+          <AssociationSet Name="FK__User__LoginID__0B5CAFEA" Association="Self.FK__User__LoginID__0B5CAFEA">
             <End Role="Login" EntitySet="Login" />
             <End Role="User" EntitySet="User" />
           </AssociationSet>
-          <AssociationSet Name="FK__User__ProfileIma__367C1819" Association="Self.FK__User__ProfileIma__367C1819">
+          <AssociationSet Name="FK__User__ProfileIma__0A688BB1" Association="Self.FK__User__ProfileIma__0A688BB1">
             <End Role="File" EntitySet="File" />
             <End Role="User" EntitySet="User" />
           </AssociationSet>
@@ -303,6 +463,40 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Login1" Relationship="Self.FK__Authentic__Login__5AB9788F" FromRole="Authentication" ToRole="Login" />
         </EntityType>
+        <EntityType Name="Class">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Class_has_Students" Relationship="Self.FK__Class_has__Class__11158940" FromRole="Class" ToRole="Class_has_Students" />
+          <NavigationProperty Name="Class_has_Teacher" Relationship="Self.FK__Class_has__Class__14E61A24" FromRole="Class" ToRole="Class_has_Teacher" />
+          <NavigationProperty Name="Task" Relationship="Self.FK__Task__Class__18B6AB08" FromRole="Class" ToRole="Task" />
+        </EntityType>
+        <EntityType Name="Class_has_Students">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Student" Type="Int32" Nullable="false" />
+          <Property Name="Class" Type="Int32" Nullable="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Class1" Relationship="Self.FK__Class_has__Class__11158940" FromRole="Class_has_Students" ToRole="Class" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Class_has__Stude__10216507" FromRole="Class_has_Students" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Class_has_Teacher">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Teacher" Type="Int32" Nullable="false" />
+          <Property Name="Class" Type="Int32" Nullable="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Class1" Relationship="Self.FK__Class_has__Class__14E61A24" FromRole="Class_has_Teacher" ToRole="Class" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Class_has__Teach__13F1F5EB" FromRole="Class_has_Teacher" ToRole="User" />
+        </EntityType>
         <EntityType Name="CompletTask">
           <Key>
             <PropertyRef Name="ID" />
@@ -311,8 +505,10 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
           <Property Name="User" Type="Int32" Nullable="false" />
           <Property Name="CompletationDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Task" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Task1" Relationship="Self.FK__CompletTas__Task__3D2915A8" FromRole="CompletTask" ToRole="Task" />
-          <NavigationProperty Name="User1" Relationship="Self.FK__CompletTas__User__3E1D39E1" FromRole="CompletTask" ToRole="User" />
+          <Property Name="SendTask" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SendTask1" Relationship="Self.FK__CompletTa__SendT__2704CA5F" FromRole="CompletTask" ToRole="SendTask" />
+          <NavigationProperty Name="Task1" Relationship="Self.FK__CompletTas__Task__251C81ED" FromRole="CompletTask" ToRole="Task" />
+          <NavigationProperty Name="User1" Relationship="Self.FK__CompletTas__User__2610A626" FromRole="CompletTask" ToRole="User" />
         </EntityType>
         <EntityType Name="File">
           <Key>
@@ -321,9 +517,22 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Path" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="FileType" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Notifications" Relationship="Self.FK__Notificati__Icon__40F9A68C" FromRole="File" ToRole="Notifications" />
-          <NavigationProperty Name="SendTask" Relationship="Self.FK__SendTask__File__46B27FE2" FromRole="File" ToRole="SendTask" />
-          <NavigationProperty Name="User" Relationship="Self.FK__User__ProfileIma__367C1819" FromRole="File" ToRole="User" />
+          <Property Name="Leaght" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Image" Relationship="Self.FK__Image__File__793DFFAF" FromRole="File" ToRole="Image" />
+          <NavigationProperty Name="SendTask" Relationship="Self.FK__SendTask__File__22401542" FromRole="File" ToRole="SendTask" />
+          <NavigationProperty Name="User" Relationship="Self.FK__User__ProfileIma__0A688BB1" FromRole="File" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Width" Type="Int32" />
+          <Property Name="Height" Type="Int32" />
+          <Property Name="Extension" Type="Int32" Nullable="false" />
+          <Property Name="File" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="File1" Relationship="Self.FK__Image__File__793DFFAF" FromRole="Image" ToRole="File" />
+          <NavigationProperty Name="Notification" Relationship="TaskDatabaseModel.FK__Notificati__Icon__2EA5EC27" FromRole="Image" ToRole="Notification" />
         </EntityType>
         <EntityType Name="IP">
           <Key>
@@ -345,19 +554,7 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
           <Property Name="isValidEmail" Type="Boolean" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Authentication" Relationship="Self.FK__Authentic__Login__5AB9788F" FromRole="Login" ToRole="Authentication" />
-          <NavigationProperty Name="User" Relationship="TaskDatabaseModel.FK__User__LoginID__6166761E" FromRole="Login" ToRole="User" />
-        </EntityType>
-        <EntityType Name="Notifications">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Icon" Type="Int32" />
-          <Property Name="User" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="File" Relationship="Self.FK__Notificati__Icon__40F9A68C" FromRole="Notifications" ToRole="File" />
-          <NavigationProperty Name="User1" Relationship="Self.FK__Notificati__User__41EDCAC5" FromRole="Notifications" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="Self.FK__User__LoginID__0B5CAFEA" FromRole="Login" ToRole="User" />
         </EntityType>
         <EntityType Name="SendTask">
           <Key>
@@ -369,9 +566,10 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
           <Property Name="User" Type="Int32" Nullable="false" />
           <Property Name="Task" Type="Int32" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="File1" Relationship="Self.FK__SendTask__File__46B27FE2" FromRole="SendTask" ToRole="File" />
-          <NavigationProperty Name="Task1" Relationship="Self.FK__SendTask__Task__45BE5BA9" FromRole="SendTask" ToRole="Task" />
-          <NavigationProperty Name="User1" Relationship="Self.FK__SendTask__User__44CA3770" FromRole="SendTask" ToRole="User" />
+          <NavigationProperty Name="CompletTask" Relationship="Self.FK__CompletTa__SendT__2704CA5F" FromRole="SendTask" ToRole="CompletTask" />
+          <NavigationProperty Name="File1" Relationship="Self.FK__SendTask__File__22401542" FromRole="SendTask" ToRole="File" />
+          <NavigationProperty Name="Task1" Relationship="Self.FK__SendTask__Task__214BF109" FromRole="SendTask" ToRole="Task" />
+          <NavigationProperty Name="User1" Relationship="Self.FK__SendTask__User__2057CCD0" FromRole="SendTask" ToRole="User" />
         </EntityType>
         <EntityType Name="Task">
           <Key>
@@ -384,9 +582,11 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
           <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Creator" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="CompletTask" Relationship="Self.FK__CompletTas__Task__3D2915A8" FromRole="Task" ToRole="CompletTask" />
-          <NavigationProperty Name="SendTask" Relationship="Self.FK__SendTask__Task__45BE5BA9" FromRole="Task" ToRole="SendTask" />
-          <NavigationProperty Name="User" Relationship="Self.FK__Task__Creator__3A4CA8FD" FromRole="Task" ToRole="User" />
+          <Property Name="Class" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Class1" Relationship="Self.FK__Task__Class__18B6AB08" FromRole="Task" ToRole="Class" />
+          <NavigationProperty Name="CompletTask" Relationship="Self.FK__CompletTas__Task__251C81ED" FromRole="Task" ToRole="CompletTask" />
+          <NavigationProperty Name="SendTask" Relationship="Self.FK__SendTask__Task__214BF109" FromRole="Task" ToRole="SendTask" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Task__Creator__17C286CF" FromRole="Task" ToRole="User" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -394,16 +594,22 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LoginID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SecondName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BirthDay" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AccountType" Type="Int32" Nullable="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="AcceptedTerms" Type="Boolean" Nullable="false" />
           <Property Name="ProfileImage" Type="Int32" Nullable="false" />
-          <Property Name="ValidKey" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="CompletTask" Relationship="Self.FK__CompletTas__User__3E1D39E1" FromRole="User" ToRole="CompletTask" />
-          <NavigationProperty Name="File" Relationship="Self.FK__User__ProfileIma__367C1819" FromRole="User" ToRole="File" />
-          <NavigationProperty Name="Notifications" Relationship="Self.FK__Notificati__User__41EDCAC5" FromRole="User" ToRole="Notifications" />
-          <NavigationProperty Name="SendTask" Relationship="Self.FK__SendTask__User__44CA3770" FromRole="User" ToRole="SendTask" />
-          <NavigationProperty Name="Task" Relationship="Self.FK__Task__Creator__3A4CA8FD" FromRole="User" ToRole="Task" />
-          <NavigationProperty Name="Login" Relationship="TaskDatabaseModel.FK__User__LoginID__6166761E" FromRole="User" ToRole="Login" />
+          <Property Name="ValidKey" Type="String" MaxLength="74" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Class_has_Students" Relationship="Self.FK__Class_has__Stude__10216507" FromRole="User" ToRole="Class_has_Students" />
+          <NavigationProperty Name="Class_has_Teacher" Relationship="Self.FK__Class_has__Teach__13F1F5EB" FromRole="User" ToRole="Class_has_Teacher" />
+          <NavigationProperty Name="CompletTask" Relationship="Self.FK__CompletTas__User__2610A626" FromRole="User" ToRole="CompletTask" />
+          <NavigationProperty Name="File" Relationship="Self.FK__User__ProfileIma__0A688BB1" FromRole="User" ToRole="File" />
+          <NavigationProperty Name="Login" Relationship="Self.FK__User__LoginID__0B5CAFEA" FromRole="User" ToRole="Login" />
+          <NavigationProperty Name="SendTask" Relationship="Self.FK__SendTask__User__2057CCD0" FromRole="User" ToRole="SendTask" />
+          <NavigationProperty Name="Task" Relationship="Self.FK__Task__Creator__17C286CF" FromRole="User" ToRole="Task" />
+          <NavigationProperty Name="Notification" Relationship="TaskDatabaseModel.FK__Notificati__User__2F9A1060" FromRole="User" ToRole="Notification" />
         </EntityType>
         <Association Name="FK__Authentic__Login__5AB9788F">
           <End Role="Login" Type="Self.Login" Multiplicity="1" />
@@ -417,7 +623,79 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CompletTas__Task__3D2915A8">
+        <Association Name="FK__Class_has__Class__11158940">
+          <End Role="Class" Type="Self.Class" Multiplicity="1" />
+          <End Role="Class_has_Students" Type="Self.Class_has_Students" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Class_has_Students">
+              <PropertyRef Name="Class" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Class_has__Class__14E61A24">
+          <End Role="Class" Type="Self.Class" Multiplicity="1" />
+          <End Role="Class_has_Teacher" Type="Self.Class_has_Teacher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Class_has_Teacher">
+              <PropertyRef Name="Class" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Task__Class__18B6AB08">
+          <End Role="Class" Type="Self.Class" Multiplicity="1" />
+          <End Role="Task" Type="Self.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="Class" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Class_has__Stude__10216507">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Class_has_Students" Type="Self.Class_has_Students" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Class_has_Students">
+              <PropertyRef Name="Student" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Class_has__Teach__13F1F5EB">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Class_has_Teacher" Type="Self.Class_has_Teacher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Class_has_Teacher">
+              <PropertyRef Name="Teacher" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CompletTa__SendT__2704CA5F">
+          <End Role="SendTask" Type="Self.SendTask" Multiplicity="1" />
+          <End Role="CompletTask" Type="Self.CompletTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SendTask">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CompletTask">
+              <PropertyRef Name="SendTask" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CompletTas__Task__251C81ED">
           <End Role="Task" Type="Self.Task" Multiplicity="1" />
           <End Role="CompletTask" Type="Self.CompletTask" Multiplicity="*" />
           <ReferentialConstraint>
@@ -429,7 +707,7 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CompletTas__User__3E1D39E1">
+        <Association Name="FK__CompletTas__User__2610A626">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="CompletTask" Type="Self.CompletTask" Multiplicity="*" />
           <ReferentialConstraint>
@@ -441,19 +719,19 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Notificati__Icon__40F9A68C">
-          <End Role="File" Type="Self.File" Multiplicity="0..1" />
-          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+        <Association Name="FK__Image__File__793DFFAF">
+          <End Role="File" Type="Self.File" Multiplicity="1" />
+          <End Role="Image" Type="Self.Image" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="File">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Notifications">
-              <PropertyRef Name="Icon" />
+            <Dependent Role="Image">
+              <PropertyRef Name="File" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SendTask__File__46B27FE2">
+        <Association Name="FK__SendTask__File__22401542">
           <End Role="File" Type="Self.File" Multiplicity="1" />
           <End Role="SendTask" Type="Self.SendTask" Multiplicity="*" />
           <ReferentialConstraint>
@@ -465,7 +743,7 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__User__ProfileIma__367C1819">
+        <Association Name="FK__User__ProfileIma__0A688BB1">
           <End Role="File" Type="Self.File" Multiplicity="1" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
@@ -477,19 +755,19 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Notificati__User__41EDCAC5">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+        <Association Name="FK__User__LoginID__0B5CAFEA">
+          <End Role="Login" Type="Self.Login" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="User">
+            <Principal Role="Login">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Notifications">
-              <PropertyRef Name="User" />
+            <Dependent Role="User">
+              <PropertyRef Name="LoginID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SendTask__Task__45BE5BA9">
+        <Association Name="FK__SendTask__Task__214BF109">
           <End Role="Task" Type="Self.Task" Multiplicity="1" />
           <End Role="SendTask" Type="Self.SendTask" Multiplicity="*" />
           <ReferentialConstraint>
@@ -501,7 +779,7 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SendTask__User__44CA3770">
+        <Association Name="FK__SendTask__User__2057CCD0">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="SendTask" Type="Self.SendTask" Multiplicity="*" />
           <ReferentialConstraint>
@@ -513,7 +791,7 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Task__Creator__3A4CA8FD">
+        <Association Name="FK__Task__Creator__17C286CF">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="Task" Type="Self.Task" Multiplicity="*" />
           <ReferentialConstraint>
@@ -527,11 +805,14 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
         </Association>
         <EntityContainer Name="TaskDatabaseEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Authentication" EntityType="Self.Authentication" />
+          <EntitySet Name="Class" EntityType="Self.Class" />
+          <EntitySet Name="Class_has_Students" EntityType="Self.Class_has_Students" />
+          <EntitySet Name="Class_has_Teacher" EntityType="Self.Class_has_Teacher" />
           <EntitySet Name="CompletTask" EntityType="Self.CompletTask" />
           <EntitySet Name="File" EntityType="Self.File" />
+          <EntitySet Name="Image" EntityType="Self.Image" />
           <EntitySet Name="IP" EntityType="Self.IP" />
           <EntitySet Name="Login" EntityType="Self.Login" />
-          <EntitySet Name="Notifications" EntityType="Self.Notifications" />
           <EntitySet Name="SendTask" EntityType="Self.SendTask" />
           <EntitySet Name="Task" EntityType="Self.Task" />
           <EntitySet Name="User" EntityType="Self.User" />
@@ -539,56 +820,109 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
             <End Role="Login" EntitySet="Login" />
             <End Role="Authentication" EntitySet="Authentication" />
           </AssociationSet>
-          <AssociationSet Name="FK__CompletTas__Task__3D2915A8" Association="Self.FK__CompletTas__Task__3D2915A8">
+          <AssociationSet Name="FK__Class_has__Class__11158940" Association="Self.FK__Class_has__Class__11158940">
+            <End Role="Class" EntitySet="Class" />
+            <End Role="Class_has_Students" EntitySet="Class_has_Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Class_has__Class__14E61A24" Association="Self.FK__Class_has__Class__14E61A24">
+            <End Role="Class" EntitySet="Class" />
+            <End Role="Class_has_Teacher" EntitySet="Class_has_Teacher" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Task__Class__18B6AB08" Association="Self.FK__Task__Class__18B6AB08">
+            <End Role="Class" EntitySet="Class" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Class_has__Stude__10216507" Association="Self.FK__Class_has__Stude__10216507">
+            <End Role="User" EntitySet="User" />
+            <End Role="Class_has_Students" EntitySet="Class_has_Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Class_has__Teach__13F1F5EB" Association="Self.FK__Class_has__Teach__13F1F5EB">
+            <End Role="User" EntitySet="User" />
+            <End Role="Class_has_Teacher" EntitySet="Class_has_Teacher" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CompletTa__SendT__2704CA5F" Association="Self.FK__CompletTa__SendT__2704CA5F">
+            <End Role="SendTask" EntitySet="SendTask" />
+            <End Role="CompletTask" EntitySet="CompletTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CompletTas__Task__251C81ED" Association="Self.FK__CompletTas__Task__251C81ED">
             <End Role="Task" EntitySet="Task" />
             <End Role="CompletTask" EntitySet="CompletTask" />
           </AssociationSet>
-          <AssociationSet Name="FK__CompletTas__User__3E1D39E1" Association="Self.FK__CompletTas__User__3E1D39E1">
+          <AssociationSet Name="FK__CompletTas__User__2610A626" Association="Self.FK__CompletTas__User__2610A626">
             <End Role="User" EntitySet="User" />
             <End Role="CompletTask" EntitySet="CompletTask" />
           </AssociationSet>
-          <AssociationSet Name="FK__Notificati__Icon__40F9A68C" Association="Self.FK__Notificati__Icon__40F9A68C">
+          <AssociationSet Name="FK__Image__File__793DFFAF" Association="Self.FK__Image__File__793DFFAF">
             <End Role="File" EntitySet="File" />
-            <End Role="Notifications" EntitySet="Notifications" />
+            <End Role="Image" EntitySet="Image" />
           </AssociationSet>
-          <AssociationSet Name="FK__SendTask__File__46B27FE2" Association="Self.FK__SendTask__File__46B27FE2">
+          <AssociationSet Name="FK__SendTask__File__22401542" Association="Self.FK__SendTask__File__22401542">
             <End Role="File" EntitySet="File" />
             <End Role="SendTask" EntitySet="SendTask" />
           </AssociationSet>
-          <AssociationSet Name="FK__User__ProfileIma__367C1819" Association="Self.FK__User__ProfileIma__367C1819">
+          <AssociationSet Name="FK__User__ProfileIma__0A688BB1" Association="Self.FK__User__ProfileIma__0A688BB1">
             <End Role="File" EntitySet="File" />
             <End Role="User" EntitySet="User" />
           </AssociationSet>
-          <AssociationSet Name="FK__Notificati__User__41EDCAC5" Association="Self.FK__Notificati__User__41EDCAC5">
-            <End Role="User" EntitySet="User" />
-            <End Role="Notifications" EntitySet="Notifications" />
-          </AssociationSet>
-          <AssociationSet Name="FK__SendTask__Task__45BE5BA9" Association="Self.FK__SendTask__Task__45BE5BA9">
-            <End Role="Task" EntitySet="Task" />
-            <End Role="SendTask" EntitySet="SendTask" />
-          </AssociationSet>
-          <AssociationSet Name="FK__SendTask__User__44CA3770" Association="Self.FK__SendTask__User__44CA3770">
-            <End Role="User" EntitySet="User" />
-            <End Role="SendTask" EntitySet="SendTask" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Task__Creator__3A4CA8FD" Association="Self.FK__Task__Creator__3A4CA8FD">
-            <End Role="User" EntitySet="User" />
-            <End Role="Task" EntitySet="Task" />
-          </AssociationSet>
-          <AssociationSet Name="FK__User__LoginID__6166761E" Association="TaskDatabaseModel.FK__User__LoginID__6166761E">
+          <AssociationSet Name="FK__User__LoginID__0B5CAFEA" Association="Self.FK__User__LoginID__0B5CAFEA">
             <End Role="Login" EntitySet="Login" />
             <End Role="User" EntitySet="User" />
           </AssociationSet>
+          <AssociationSet Name="FK__SendTask__Task__214BF109" Association="Self.FK__SendTask__Task__214BF109">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="SendTask" EntitySet="SendTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SendTask__User__2057CCD0" Association="Self.FK__SendTask__User__2057CCD0">
+            <End Role="User" EntitySet="User" />
+            <End Role="SendTask" EntitySet="SendTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Task__Creator__17C286CF" Association="Self.FK__Task__Creator__17C286CF">
+            <End Role="User" EntitySet="User" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+          <EntitySet Name="Notification" EntityType="TaskDatabaseModel.Notification" />
+          <AssociationSet Name="FK__Notificati__Icon__2EA5EC27" Association="TaskDatabaseModel.FK__Notificati__Icon__2EA5EC27">
+            <End Role="Image" EntitySet="Image" />
+            <End Role="Notification" EntitySet="Notification" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Notificati__User__2F9A1060" Association="TaskDatabaseModel.FK__Notificati__User__2F9A1060">
+            <End Role="User" EntitySet="User" />
+            <End Role="Notification" EntitySet="Notification" />
+          </AssociationSet>
         </EntityContainer>
-        <Association Name="FK__User__LoginID__6166761E">
-          <End Type="TaskDatabaseModel.Login" Role="Login" Multiplicity="1" />
-          <End Type="TaskDatabaseModel.User" Role="User" Multiplicity="*" />
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Icon" Type="Int32" />
+          <Property Name="User" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Image" Relationship="TaskDatabaseModel.FK__Notificati__Icon__2EA5EC27" FromRole="Notification" ToRole="Image" />
+          <NavigationProperty Name="User1" Relationship="TaskDatabaseModel.FK__Notificati__User__2F9A1060" FromRole="Notification" ToRole="User" />
+        </EntityType>
+        <Association Name="FK__Notificati__Icon__2EA5EC27">
+          <End Type="TaskDatabaseModel.Image" Role="Image" Multiplicity="0..1" />
+          <End Type="TaskDatabaseModel.Notification" Role="Notification" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Login">
+            <Principal Role="Image">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="User">
-              <PropertyRef Name="LoginID" />
+            <Dependent Role="Notification">
+              <PropertyRef Name="Icon" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Notificati__User__2F9A1060">
+          <End Type="TaskDatabaseModel.User" Role="User" Multiplicity="1" />
+          <End Type="TaskDatabaseModel.Notification" Role="Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="User" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -610,6 +944,36 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Class">
+            <EntityTypeMapping TypeName="TaskDatabaseModel.Class">
+              <MappingFragment StoreEntitySet="Class">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Class_has_Students">
+            <EntityTypeMapping TypeName="TaskDatabaseModel.Class_has_Students">
+              <MappingFragment StoreEntitySet="Class_has_Students">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Student" ColumnName="Student" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Class_has_Teacher">
+            <EntityTypeMapping TypeName="TaskDatabaseModel.Class_has_Teacher">
+              <MappingFragment StoreEntitySet="Class_has_Teacher">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Teacher" ColumnName="Teacher" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="CompletTask">
             <EntityTypeMapping TypeName="TaskDatabaseModel.CompletTask">
               <MappingFragment StoreEntitySet="CompletTask">
@@ -617,6 +981,7 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
                 <ScalarProperty Name="User" ColumnName="User" />
                 <ScalarProperty Name="CompletationDate" ColumnName="CompletationDate" />
                 <ScalarProperty Name="Task" ColumnName="Task" />
+                <ScalarProperty Name="SendTask" ColumnName="SendTask" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -626,6 +991,18 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Path" ColumnName="Path" />
                 <ScalarProperty Name="FileType" ColumnName="FileType" />
+                <ScalarProperty Name="Leaght" ColumnName="Leaght" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Image">
+            <EntityTypeMapping TypeName="TaskDatabaseModel.Image">
+              <MappingFragment StoreEntitySet="Image">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Width" ColumnName="Width" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="Extension" ColumnName="Extension" />
+                <ScalarProperty Name="File" ColumnName="File" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -651,17 +1028,6 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Notifications">
-            <EntityTypeMapping TypeName="TaskDatabaseModel.Notifications">
-              <MappingFragment StoreEntitySet="Notifications">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Content" ColumnName="Content" />
-                <ScalarProperty Name="Icon" ColumnName="Icon" />
-                <ScalarProperty Name="User" ColumnName="User" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="SendTask">
             <EntityTypeMapping TypeName="TaskDatabaseModel.SendTask">
               <MappingFragment StoreEntitySet="SendTask">
@@ -684,6 +1050,7 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
                 <ScalarProperty Name="Content" ColumnName="Content" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="Creator" ColumnName="Creator" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -692,10 +1059,25 @@ warning 6035: The relationship 'FK__Authenticati__IP__5BAD9CC8' has columns that
               <MappingFragment StoreEntitySet="User">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="LoginID" ColumnName="LoginID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="SecondName" ColumnName="SecondName" />
+                <ScalarProperty Name="BirthDay" ColumnName="BirthDay" />
                 <ScalarProperty Name="AccountType" ColumnName="AccountType" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="AcceptedTerms" ColumnName="AcceptedTerms" />
                 <ScalarProperty Name="ProfileImage" ColumnName="ProfileImage" />
                 <ScalarProperty Name="ValidKey" ColumnName="ValidKey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notification">
+            <EntityTypeMapping TypeName="TaskDatabaseModel.Notification">
+              <MappingFragment StoreEntitySet="Notification">
+                <ScalarProperty Name="User" ColumnName="User" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

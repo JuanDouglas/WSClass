@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -15,32 +16,32 @@ namespace WSClass.API.Controllers
         private TaskDatabaseEntities db = new TaskDatabaseEntities();
 
         // GET: Notifications
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var notifications = db.Notifications.Include(n => n.File).Include(n => n.User1);
-            return View(notifications.ToList());
+            var notification = db.Notification.Include(n => n.Image).Include(n => n.User1);
+            return View(await notification.ToListAsync());
         }
 
         // GET: Notifications/Details/5
-        public ActionResult Details(int? id)
+        public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Notifications notifications = db.Notifications.Find(id);
-            if (notifications == null)
+            Notification notification = await db.Notification.FindAsync(id);
+            if (notification == null)
             {
                 return HttpNotFound();
             }
-            return View(notifications);
+            return View(notification);
         }
 
         // GET: Notifications/Create
         public ActionResult Create()
         {
-            ViewBag.Icon = new SelectList(db.File, "ID", "Path");
-            ViewBag.User = new SelectList(db.User, "ID", "Name");
+            ViewBag.Icon = new SelectList(db.Image, "ID", "ID");
+            ViewBag.User = new SelectList(db.User, "ID", "FirstName");
             return View();
         }
 
@@ -49,35 +50,35 @@ namespace WSClass.API.Controllers
         // Para obter mais detalhes, confira https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Title,Content,Icon,User")] Notifications notifications)
+        public async Task<ActionResult> Create([Bind(Include = "ID,Title,Content,Icon,User")] Notification notification)
         {
             if (ModelState.IsValid)
             {
-                db.Notifications.Add(notifications);
-                db.SaveChanges();
+                db.Notification.Add(notification);
+                await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Icon = new SelectList(db.File, "ID", "Path", notifications.Icon);
-            ViewBag.User = new SelectList(db.User, "ID", "Name", notifications.User);
-            return View(notifications);
+            ViewBag.Icon = new SelectList(db.Image, "ID", "ID", notification.Icon);
+            ViewBag.User = new SelectList(db.User, "ID", "FirstName", notification.User);
+            return View(notification);
         }
 
         // GET: Notifications/Edit/5
-        public ActionResult Edit(int? id)
+        public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Notifications notifications = db.Notifications.Find(id);
-            if (notifications == null)
+            Notification notification = await db.Notification.FindAsync(id);
+            if (notification == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.Icon = new SelectList(db.File, "ID", "Path", notifications.Icon);
-            ViewBag.User = new SelectList(db.User, "ID", "Name", notifications.User);
-            return View(notifications);
+            ViewBag.Icon = new SelectList(db.Image, "ID", "ID", notification.Icon);
+            ViewBag.User = new SelectList(db.User, "ID", "FirstName", notification.User);
+            return View(notification);
         }
 
         // POST: Notifications/Edit/5
@@ -85,42 +86,42 @@ namespace WSClass.API.Controllers
         // Para obter mais detalhes, confira https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Title,Content,Icon,User")] Notifications notifications)
+        public async Task<ActionResult> Edit([Bind(Include = "ID,Title,Content,Icon,User")] Notification notification)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(notifications).State = EntityState.Modified;
-                db.SaveChanges();
+                db.Entry(notification).State = EntityState.Modified;
+                await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.Icon = new SelectList(db.File, "ID", "Path", notifications.Icon);
-            ViewBag.User = new SelectList(db.User, "ID", "Name", notifications.User);
-            return View(notifications);
+            ViewBag.Icon = new SelectList(db.Image, "ID", "ID", notification.Icon);
+            ViewBag.User = new SelectList(db.User, "ID", "FirstName", notification.User);
+            return View(notification);
         }
 
         // GET: Notifications/Delete/5
-        public ActionResult Delete(int? id)
+        public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Notifications notifications = db.Notifications.Find(id);
-            if (notifications == null)
+            Notification notification = await db.Notification.FindAsync(id);
+            if (notification == null)
             {
                 return HttpNotFound();
             }
-            return View(notifications);
+            return View(notification);
         }
 
         // POST: Notifications/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Notifications notifications = db.Notifications.Find(id);
-            db.Notifications.Remove(notifications);
-            db.SaveChanges();
+            Notification notification = await db.Notification.FindAsync(id);
+            db.Notification.Remove(notification);
+            await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 

@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -19,14 +19,14 @@ namespace WSClass.API.Controllers
         private TaskDatabaseEntities db = new TaskDatabaseEntities();
 
         // GET: api/Notification
-        public IQueryable<Notifications> GetNotifications()
+        public IQueryable<Notification> GetNotification()
         {
-            return db.Notifications;
+            return db.Notification;
         }
 
         // GET: api/Notification/5
-        [ResponseType(typeof(Notifications))]
-        public async Task<IHttpActionResult> GetNotificationsAsync(string login_token,string valid_key)
+        [ResponseType(typeof(Notification[]))]
+        public async Task<IHttpActionResult> GetNotificationAsync(string login_token,string valid_key)
         {
             try
             {
@@ -37,30 +37,41 @@ namespace WSClass.API.Controllers
                 return Unauthorized();
             }
 
-            List<Notifications> notifications = await db.Notifications.Where(wh => wh.User1.ValidKey == valid_key).ToListAsync();
-            if (notifications == null)
+            List<Notification> dbNotifications = await db.Notification.Where(wh => wh.User1.ValidKey == valid_key).ToListAsync();
+            if (dbNotifications == null)
             {
                 return NotFound();
             }
 
-            return Ok(notifications);
+            List<NotificationModel> notifications = new List<NotificationModel>();
+            foreach (var item in dbNotifications)
+            {
+                notifications.Add(new NotificationModel(item));
+            }
+            //Remove as notificações
+            //foreach (var notification in notifications)
+            //{
+            //    db.Notification.Remove(notification);
+            //}
+            //await db.SaveChangesAsync();
+            return Ok(notifications.ToArray());
         }
 
         // PUT: api/Notification/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutNotifications(int id, Notifications notifications)
+        public IHttpActionResult PutNotification(int id, Notification Notification)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != notifications.ID)
+            if (id != Notification.ID)
             {
                 return BadRequest();
             }
 
-            db.Entry(notifications).State = EntityState.Modified;
+            db.Entry(Notification).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +79,7 @@ namespace WSClass.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!NotificationsExists(id))
+                if (!NotificationExists(id))
                 {
                     return NotFound();
                 }
@@ -82,34 +93,33 @@ namespace WSClass.API.Controllers
         }
 
         // POST: api/Notification
-        [ResponseType(typeof(Notifications))]
-        public IHttpActionResult PostNotifications(Notifications notifications)
+        [ResponseType(typeof(Notification))]
+        public IHttpActionResult PostNotification(Notification Notification)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            db.Notifications.Add(notifications);
+            db.Notification.Add(Notification);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = notifications.ID }, notifications);
+            return CreatedAtRoute("DefaultApi", new { id = Notification.ID }, Notification);
         }
 
         // DELETE: api/Notification/5
-        [ResponseType(typeof(Notifications))]
-        public IHttpActionResult DeleteNotifications(int id)
+        [ResponseType(typeof(Notification))]
+        public IHttpActionResult DeleteNotification(int id)
         {
-            Notifications notifications = db.Notifications.Find(id);
-            if (notifications == null)
+            Notification Notification = db.Notification.Find(id);
+            if (Notification == null)
             {
                 return NotFound();
             }
 
-            db.Notifications.Remove(notifications);
+            db.Notification.Remove(Notification);
             db.SaveChanges();
 
-            return Ok(notifications);
+            return Ok(Notification);
         }
 
         protected override void Dispose(bool disposing)
@@ -121,9 +131,9 @@ namespace WSClass.API.Controllers
             base.Dispose(disposing);
         }
 
-        private bool NotificationsExists(int id)
+        private bool NotificationExists(int id)
         {
-            return db.Notifications.Count(e => e.ID == id) > 0;
+            return db.Notification.Count(e => e.ID == id) > 0;
         }
     }
 }

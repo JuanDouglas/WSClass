@@ -26,13 +26,17 @@ namespace WSClass.API.Models
         }
     
         public virtual DbSet<Authentication> Authentication { get; set; }
+        public virtual DbSet<Class> Class { get; set; }
+        public virtual DbSet<Class_has_Students> Class_has_Students { get; set; }
+        public virtual DbSet<Class_has_Teacher> Class_has_Teacher { get; set; }
         public virtual DbSet<CompletTask> CompletTask { get; set; }
         public virtual DbSet<File> File { get; set; }
+        public virtual DbSet<Image> Image { get; set; }
         public virtual DbSet<IP> IP { get; set; }
         public virtual DbSet<Login> Login { get; set; }
-        public virtual DbSet<Notifications> Notifications { get; set; }
         public virtual DbSet<SendTask> SendTask { get; set; }
         public virtual DbSet<Task> Task { get; set; }
         public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<Notification> Notification { get; set; }
     }
 }

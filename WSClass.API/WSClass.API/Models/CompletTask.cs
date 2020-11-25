@@ -18,7 +18,9 @@ namespace WSClass.API.Models
         public int User { get; set; }
         public System.DateTime CompletationDate { get; set; }
         public int Task { get; set; }
+        public int SendTask { get; set; }
     
+        public virtual SendTask SendTask1 { get; set; }
         public virtual Task Task1 { get; set; }
         public virtual User User1 { get; set; }
     }

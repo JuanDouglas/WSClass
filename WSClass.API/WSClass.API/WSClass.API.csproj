@@ -170,19 +170,22 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\FilesController.cs" />
     <Compile Include="Controllers\LoginsController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\NotificationsController.cs" />
-    <Compile Include="Models\Exceptions\APIException.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LoginController.cs" />
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
     <Compile Include="Models\Authentication.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Autheticated.cs" />
+    <Compile Include="Models\Class.cs">
+      <DependentUpon>DatabaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Class_has_Students.cs">
+      <DependentUpon>DatabaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Class_has_Teacher.cs">
+      <DependentUpon>DatabaseModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CompletTask.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
@@ -201,11 +204,26 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DatabaseModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Enums\AccountType.cs" />
+    <Compile Include="Models\Enums\FileType.cs" />
+    <Compile Include="Models\Enums\ImageExtension.cs" />
+    <Compile Include="Models\Exceptions\APIException.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Autheticated.cs" />
     <Compile Include="Models\Enums\Confiance.cs" />
     <Compile Include="Models\Exceptions\AuthenticationException.cs" />
     <Compile Include="Models\File.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\FileModel.cs" />
+    <Compile Include="Models\Image.cs">
+      <DependentUpon>DatabaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ImageModel.cs" />
     <Compile Include="Models\IP.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
@@ -214,15 +232,18 @@
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\LoginModel.cs" />
-    <Compile Include="Models\Notifications.cs">
+    <Compile Include="Models\Notification.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\NotificationModel.cs" />
     <Compile Include="Models\SendTask.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Task.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UploadModel.cs" />
+    <Compile Include="Models\UploadSession.cs" />
     <Compile Include="Models\User.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
@@ -410,16 +431,16 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Scripts\jquery-3.5.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.5.1.min.map" />
-    <Content Include="Views\Notifications\Create.cshtml" />
-    <Content Include="Views\Notifications\Delete.cshtml" />
-    <Content Include="Views\Notifications\Details.cshtml" />
-    <Content Include="Views\Notifications\Edit.cshtml" />
-    <Content Include="Views\Notifications\Index.cshtml" />
     <Content Include="Views\Logins\Create.cshtml" />
     <Content Include="Views\Logins\Delete.cshtml" />
     <Content Include="Views\Logins\Details.cshtml" />
     <Content Include="Views\Logins\Edit.cshtml" />
     <Content Include="Views\Logins\Index.cshtml" />
+    <Content Include="Views\Notifications\Create.cshtml" />
+    <Content Include="Views\Notifications\Delete.cshtml" />
+    <Content Include="Views\Notifications\Details.cshtml" />
+    <Content Include="Views\Notifications\Edit.cshtml" />
+    <Content Include="Views\Notifications\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -158,7 +158,7 @@ namespace WSClass.API.Controllers
             }
             Authentication auth = await db.Authentication.FirstOrDefaultAsync(fs=>fs.IP==ip);
             
-            return Ok(new Authenticated(auth));
+            return Ok(new Authenticated(auth,valid_key));
         }
         [HttpGet]
         [ResponseType(typeof(Authenticated))]
@@ -248,8 +248,9 @@ namespace WSClass.API.Controllers
                     {
                         StatusCode = HttpStatusCode.OK,
                         Content = new StringContent(
-                        JsonConvert.SerializeObject(
-                            new Authenticated(authentication)))
+                            JsonConvert.SerializeObject(
+                                new Authenticated(authentication, 
+                                (await db.User.FirstOrDefaultAsync(fs => fs.LoginID == result.ID)).ValidKey)))
                     };
                     return ResponseMessage(response);
 
@@ -338,31 +339,12 @@ namespace WSClass.API.Controllers
         /// <param name="login">Modelo Contendo informações de login.</param>
         /// <returns>retorna o modelo com as informações adionadas.</returns>
         [ResponseType(typeof(LoginModel))]
+        [Route("Authetication/Create")]
         [HttpPut]
-        public async Task<IHttpActionResult> Put(LoginModel login)
+        public async Task<IHttpActionResult> Put([FromBody]LoginModel login)
         {
             #region ValidModel
-            //Verifica se as senhas coincidem.
-            if (login.Password != login.ConfirmPassword)
-            {
-                ModelState.AddModelError("ConfirmPassword", "Passwords must match!");
-            }
-
-            //Valida se já existe um Login com o mesmo E-mail cadastrado.
-            Login exists = await db.Login.FirstOrDefaultAsync(fs => fs.Email == login.Email);
-            if (exists != null)
-            {
-                ModelState.AddModelError("Email", "There is already a registration with this 'E-mail'.");
-            }
-
-            //Valida se já existe um Login com o mesmo UserName cadastrado.
-            exists = await db.Login.FirstOrDefaultAsync(fs => fs.UserName == login.UserName);
-            if (exists != null)
-            {
-                ModelState.AddModelError("UserName", "There is already a registration with this 'UserName'.");
-            }
-
-
+            await ValidModelAsync(login);
             //Verifica se o modelo é valido
             if (!ModelState.IsValid)
             {
@@ -371,15 +353,14 @@ namespace WSClass.API.Controllers
             #endregion
 
             #region LoginInsert
-            //Adiciona a data de criação do login
-            login.CreateDate = DateTime.Now;
-
             //Criptografa a senha
             login.Password = CryptographyString(login.Password);
 
             //Trasforma a Classe LoginModel em um mOdelo do banco de dados.
             var loginModel = login.GetLogin();
 
+            //Adiciona a data de criação do login
+            loginModel.CreateDate = DateTime.UtcNow; ;
             try
             {
                 //Adiciona ao DBContext
@@ -428,7 +409,7 @@ namespace WSClass.API.Controllers
                 return InternalServerError();
             }
             #endregion
-            return Ok();
+            return Ok(login);
         }
         #endregion
 
@@ -659,6 +640,68 @@ namespace WSClass.API.Controllers
             }
         }
 
+
         #endregion
+
+        private async System.Threading.Tasks.Task ValidModelAsync(LoginModel login) {
+            //verifica se o login e nulo
+            if (login == null)
+            {
+                login = new LoginModel();
+                //return BadRequest();
+            }
+
+            //Verifica se a senha e nula
+            if (login.Password == null)
+            {
+                ModelState.AddModelError("Password", "Field is required");
+                login.Password = string.Empty;
+            }
+
+            //Verifica se a senha de confirmação e nula
+            if (login.ConfirmPassword == null)
+            {
+                ModelState.AddModelError("ConfirmPassword", "Field is required");
+                login.ConfirmPassword = string.Empty;
+            }
+
+            if (login.Email == null)
+            {
+                ModelState.AddModelError("Email", "Field is required");
+                login.Email = string.Empty;
+            }
+
+            if (login.UserName == null)
+            {
+                ModelState.AddModelError("UserName", "Field is required");
+                login.UserName = string.Empty;
+            }
+
+            if (login.User ==null)
+            {
+                ModelState.AddModelError("User", "Field is required");
+            }
+
+            //Verifica se as senhas coincidem.
+            if (login.Password != login.ConfirmPassword)
+            {
+                ModelState.AddModelError("ConfirmPassword", "Passwords must match!");
+            }
+
+            //Valida se já existe um Login com o mesmo E-mail cadastrado.
+            Login exists = await db.Login.FirstOrDefaultAsync(fs => fs.Email == login.Email);
+            if (exists != null)
+            {
+                ModelState.AddModelError("Email", "There is already a registration with this 'E-mail'.");
+            }
+
+            //Valida se já existe um Login com o mesmo UserName cadastrado.
+            exists = await db.Login.FirstOrDefaultAsync(fs => fs.UserName == login.UserName);
+            if (exists != null)
+            {
+                ModelState.AddModelError("UserName", "There is already a registration with this 'UserName'.");
+            }
+            
+        }
     }
 }

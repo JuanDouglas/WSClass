@@ -31,13 +31,18 @@ namespace WSClass.API.Models
         /// Token de autenticação
         /// </summary>
         public string Token { get; set; }
-        public Authenticated(Authentication aut)
+        /// <summary>
+        /// Chave de validação da autenticação.
+        /// </summary>
+        public string ValidKey { get; set; }
+        public Authenticated(Authentication aut,string valid_key)
         {
             ID = aut.ID;
             UserAgent = aut.User_Agent;
             Token = aut.Token;
             IPAddress = aut.IP;
             IP = new IPModel(db.IP.FirstOrDefault(fs => fs.IP1 == IPAddress));
+            ValidKey = valid_key;
         }
     }
 }

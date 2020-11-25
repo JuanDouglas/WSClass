@@ -44,10 +44,26 @@ namespace WSClass.API.Models
         [StringLength(maximumLength: 24, MinimumLength = 14)]
         public string PhoneNumber { get; set; }
 
+        /// <summary>
+        /// Indica se o usuário aceitou os termos.
+        /// </summary>
+        [Required]
+        public bool AcceptedTerms { get; set; }
+        /// <summary>
+        /// Indica o tipo de conta
+        /// </summary>
+        [Required]
+        public Enums.AccountType AccountType { get; set; }
+
         public User GetUser()
         {
             User re = new User
             {
+                FirstName = FirstName,
+                SecondName = SecondName,
+                PhoneNumber = PhoneNumber,
+                BirthDay = BirthDay,
+                AccountType = (int)AccountType 
             };
             return re;
         }

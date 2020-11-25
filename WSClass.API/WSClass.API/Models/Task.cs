@@ -28,7 +28,9 @@ namespace WSClass.API.Models
         public string Content { get; set; }
         public System.DateTime StartDate { get; set; }
         public int Creator { get; set; }
+        public int Class { get; set; }
     
+        public virtual Class Class1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CompletTask> CompletTask { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -4,27 +4,38 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="fbb19eed945b44d7a279dd7b512dc5c6" Name="Diagram1">
-        <EntityTypeShape EntityType="TaskDatabaseModel.Authentication" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="TaskDatabaseModel.CompletTask" Width="1.5" PointX="7.5" PointY="15.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="TaskDatabaseModel.File" Width="1.5" PointX="0.75" PointY="6.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="TaskDatabaseModel.IP" Width="1.5" PointX="5.25" PointY="3.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="TaskDatabaseModel.Login" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="TaskDatabaseModel.Notifications" Width="1.5" PointX="5.25" PointY="10" IsExpanded="true" />
-        <EntityTypeShape EntityType="TaskDatabaseModel.SendTask" Width="1.5" PointX="7.5" PointY="11.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="TaskDatabaseModel.Task" Width="1.5" PointX="5.25" PointY="15.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TaskDatabaseModel.User" Width="1.5" PointX="3" PointY="12.75" IsExpanded="true" />
+      <Diagram DiagramId="538e2972c6d94d6f8de6fa3ea7a8fe48" Name="Diagram1" ZoomLevel="93">
+        <EntityTypeShape EntityType="TaskDatabaseModel.Authentication" Width="1.5" PointX="6" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskDatabaseModel.Class" Width="1.5" PointX="6" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskDatabaseModel.Class_has_Students" Width="1.5" PointX="8.25" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskDatabaseModel.Class_has_Teacher" Width="1.5" PointX="8.25" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskDatabaseModel.CompletTask" Width="1.5" PointX="13.5" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskDatabaseModel.File" Width="1.5" PointX="0.75" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskDatabaseModel.Image" Width="1.5" PointX="3" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskDatabaseModel.IP" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskDatabaseModel.Login" Width="1.5" PointX="3.75" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskDatabaseModel.SendTask" Width="1.5" PointX="6" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskDatabaseModel.Task" Width="1.5" PointX="11.25" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskDatabaseModel.User" Width="1.5" PointX="6" PointY="4.75" IsExpanded="true" />
         <AssociationConnector Association="TaskDatabaseModel.FK__Authentic__Login__5AB9788F" ManuallyRouted="false" />
-        <AssociationConnector Association="TaskDatabaseModel.FK__CompletTas__Task__3D2915A8" ManuallyRouted="false" />
-        <AssociationConnector Association="TaskDatabaseModel.FK__CompletTas__User__3E1D39E1" ManuallyRouted="false" />
-        <AssociationConnector Association="TaskDatabaseModel.FK__Notificati__Icon__40F9A68C" ManuallyRouted="false" />
-        <AssociationConnector Association="TaskDatabaseModel.FK__SendTask__File__46B27FE2" ManuallyRouted="false" />
-        <AssociationConnector Association="TaskDatabaseModel.FK__User__ProfileIma__367C1819" ManuallyRouted="false" />
-        <AssociationConnector Association="TaskDatabaseModel.FK__Notificati__User__41EDCAC5" ManuallyRouted="false" />
-        <AssociationConnector Association="TaskDatabaseModel.FK__SendTask__Task__45BE5BA9" ManuallyRouted="false" />
-        <AssociationConnector Association="TaskDatabaseModel.FK__SendTask__User__44CA3770" ManuallyRouted="false" />
-        <AssociationConnector Association="TaskDatabaseModel.FK__Task__Creator__3A4CA8FD" ManuallyRouted="false" />
-        <AssociationConnector Association="TaskDatabaseModel.FK__User__LoginID__6166761E" />
+        <AssociationConnector Association="TaskDatabaseModel.FK__Class_has__Class__11158940" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskDatabaseModel.FK__Class_has__Class__14E61A24" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskDatabaseModel.FK__Task__Class__18B6AB08" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskDatabaseModel.FK__Class_has__Stude__10216507" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskDatabaseModel.FK__Class_has__Teach__13F1F5EB" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskDatabaseModel.FK__CompletTa__SendT__2704CA5F" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskDatabaseModel.FK__CompletTas__Task__251C81ED" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskDatabaseModel.FK__CompletTas__User__2610A626" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskDatabaseModel.FK__Image__File__793DFFAF" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskDatabaseModel.FK__SendTask__File__22401542" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskDatabaseModel.FK__User__ProfileIma__0A688BB1" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskDatabaseModel.FK__User__LoginID__0B5CAFEA" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskDatabaseModel.FK__SendTask__Task__214BF109" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskDatabaseModel.FK__SendTask__User__2057CCD0" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskDatabaseModel.FK__Task__Creator__17C286CF" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="TaskDatabaseModel.Notification" Width="1.5" PointX="8.25" PointY="9.125" />
+        <AssociationConnector Association="TaskDatabaseModel.FK__Notificati__Icon__2EA5EC27" />
+        <AssociationConnector Association="TaskDatabaseModel.FK__Notificati__User__2F9A1060" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

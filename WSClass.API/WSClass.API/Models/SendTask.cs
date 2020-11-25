@@ -14,6 +14,12 @@ namespace WSClass.API.Models
     
     public partial class SendTask
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public SendTask()
+        {
+            this.CompletTask = new HashSet<CompletTask>();
+        }
+    
         public int ID { get; set; }
         public int File { get; set; }
         public string Description { get; set; }
@@ -21,6 +27,8 @@ namespace WSClass.API.Models
         public int Task { get; set; }
         public System.DateTime Date { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CompletTask> CompletTask { get; set; }
         public virtual File File1 { get; set; }
         public virtual Task Task1 { get; set; }
         public virtual User User1 { get; set; }

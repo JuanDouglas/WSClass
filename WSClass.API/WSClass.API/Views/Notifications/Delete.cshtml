@@ -1,56 +1,64 @@
-﻿@model WSClass.API.Models.Notifications
+﻿@model WSClass.API.Models.Notification
 
 @{
-    ViewBag.Title = "Delete";
+    Layout = null;
 }
 
-<h2>Delete</h2>
+<!DOCTYPE html>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Notifications</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.File.Path)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.File.Path)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.User1.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.User1.Name)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
-        </div>
-    }
-</div>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Delete</title>
+</head>
+<body>
+    <h3>Are you sure you want to delete this?</h3>
+    <div>
+        <h4>Notification</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Content)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Content)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Image.ID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Image.ID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.User1.FirstName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.User1.FirstName)
+            </dd>
+    
+        </dl>
+    
+        @using (Html.BeginForm()) {
+            @Html.AntiForgeryToken()
+    
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" /> |
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+    </div>
+</body>
+</html>

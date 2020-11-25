@@ -17,28 +17,38 @@ namespace WSClass.API.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
+            this.Class_has_Students = new HashSet<Class_has_Students>();
+            this.Class_has_Teacher = new HashSet<Class_has_Teacher>();
             this.CompletTask = new HashSet<CompletTask>();
-            this.Notifications = new HashSet<Notifications>();
             this.SendTask = new HashSet<SendTask>();
             this.Task = new HashSet<Task>();
+            this.Notification = new HashSet<Notification>();
         }
     
         public int ID { get; set; }
         public int LoginID { get; set; }
-        public string Name { get; set; }
+        public string FirstName { get; set; }
+        public string SecondName { get; set; }
+        public System.DateTime BirthDay { get; set; }
         public int AccountType { get; set; }
+        public string PhoneNumber { get; set; }
+        public bool AcceptedTerms { get; set; }
         public int ProfileImage { get; set; }
         public string ValidKey { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Class_has_Students> Class_has_Students { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Class_has_Teacher> Class_has_Teacher { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CompletTask> CompletTask { get; set; }
         public virtual File File { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Notifications> Notifications { get; set; }
+        public virtual Login Login { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SendTask> SendTask { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Task> Task { get; set; }
-        public virtual Login Login { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Notification> Notification { get; set; }
     }
 }
